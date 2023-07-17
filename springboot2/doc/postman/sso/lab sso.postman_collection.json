@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "bf0b202c-f8ac-46ed-959a-e504ea6fb759",
+		"name": "lab sso",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "sso register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"123123@mail.com\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/sso/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sso",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sso login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"123123@mail.com\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/sso/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sso",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sso logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjIzMzRmZjBhLWE1ZTUtNDRkNy1hOGI1LTZhNjdkZDE1MzMzZCIsInN1YiI6InVzZXIgaWRlbnRpdHkiLCJpYXQiOjE2ODkzMjM5ODIsImV4cCI6MTY4OTM0MTk4Mn0.MkMsqVHkmHGvcfgJltKhz_i1Q95jjwZOGbv8fIpe1XLcip10IjQpVn1fjee04c0CyJ6q18nbojWqwf2MFDVY9w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/sso/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sso",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sso check",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjIzMzRmZjBhLWE1ZTUtNDRkNy1hOGI1LTZhNjdkZDE1MzMzZCIsInN1YiI6InVzZXIgaWRlbnRpdHkiLCJpYXQiOjE2ODkzMjM5ODIsImV4cCI6MTY4OTM0MTk4Mn0.MkMsqVHkmHGvcfgJltKhz_i1Q95jjwZOGbv8fIpe1XLcip10IjQpVn1fjee04c0CyJ6q18nbojWqwf2MFDVY9w\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/sso/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sso",
+						"check"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

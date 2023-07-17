@@ -1,0 +1,8 @@
+FROM openjdk:17-jdk
+#RUN addgroup --system spring && adduser --system spring -ingroup spring
+#USER spring:spring
+#ARG JAR_FILE=target/*.jar
+WORKDIR /backend
+ENV SPRING_PROFILES_ACTIVE=k8s
+COPY ../../../backend/target/*.jar /backend/app.jar
+ENTRYPOINT ["java","-jar","/backend/app.jar"]

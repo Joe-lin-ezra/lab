@@ -1,0 +1,75 @@
+<configuration>
+    <!--    設置變數，將檔案位置設為./logs-->
+    <property name="LOG_PATH" value="./logs" />
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 用 ThresholdFilter 過濾 ERROR 以上級別才顯示在 terminal 上~-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <!-- 印出Log的格式 -->
+            <!-- %d{YYYY-MM-dd HH: mm:ss.SSS} log 時間 -->
+            <!-- %thread 執行緒名字 -->
+            <!-- %highlight 顯示高亮顏色 -->
+            <!-- %-5level log級別且顯示5個字，靠左對齊 -->
+            <!-- %logger log的名字 -->
+            <!-- %msg log訊息 -->
+<!--            <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %logger{36} - %msg%n</pattern>-->
+            <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- 输出到文件 -->
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 輸出文件的位置，以每一天做切割 -->
+            <!-- 以 .zip .gz 做為後綴，則啟用日誌壓縮 -->
+            <fileNamePattern>${LOG_PATH}/error/%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <!--保留 30 天的歷史紀錄 -->
+            <maxHistory>45</maxHistory>
+        </rollingPolicy>
+
+        <!-- 設定 WARN 以上級別才需要輸出至檔案 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <!-- Log 的格式 -->
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 輸出文件的位置，以每一天做切割 -->
+            <!-- 以 .zip .gz 做為後綴，則啟用日誌壓縮 -->
+            <fileNamePattern>${LOG_PATH}/info/%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <!--保留 30 天的歷史紀錄 -->
+            <maxHistory>45</maxHistory>
+        </rollingPolicy>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <!-- Log 的格式 -->
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <root level="DEBUG">
+        <!-- 把 appender 加上去 -->
+        <appender-ref ref="console" />
+        <appender-ref ref="error" />
+        <appender-ref ref="info" />
+    </root>
+</configuration>

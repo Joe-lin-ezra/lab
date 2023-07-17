@@ -1,0 +1,21 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AuthControllerTest" type="JUnit" factoryName="JUnit">
+    <module name="sso" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.lab.sso.controller.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="com.lab.sso.controller" />
+    <option name="MAIN_CLASS_NAME" value="com.lab.sso.controller.AuthControllerTest" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="method" />
+    <envs>
+      <env name="SPRING_PROFILES_ACTIVE" value="test" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

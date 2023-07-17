@@ -1,0 +1,8 @@
+FROM openjdk:17-jdk
+#RUN addgroup --system spring && adduser --system spring -ingroup spring
+#USER spring:spring
+#ARG JAR_FILE=target/*.jar
+WORKDIR /sso
+ENV SPRING_PROFILES_ACTIVE=k8s
+COPY ../../../sso/target/*.jar /sso/app.jar
+ENTRYPOINT ["java","-jar","/sso/app.jar"]
