@@ -13,20 +13,24 @@ public class LoggerService
 
 	public void accessDeny( Package source, HttpServletRequest request )
 	{
-		logger.info( source.getName() + ": "+ request.getRemoteAddr() + " is denied to access the resource in " + request.getRequestURI() );
+		logger.info( "{0}: {1} is denied to access the resource in {2}.".formatted( source.getName(),
+		                                                                            request.getRemoteAddr(), request.getRequestURI() ) );
 	}
 
-	public void recordingQueryTime(Exception e)
+	public void recordingQueryTime( String methodName, long executionTime )
 	{
-		logger.debug("");
+		logger.info( "{0} took {1} milli-seconds.".formatted( methodName, executionTime ) );
 	}
 
-	public void exception( Package source, Exception e )
+	public void exception( Exception e )
 	{
 		String exceptionSource = e.getStackTrace()[ 0 ].getClassName();
 		String exceptionClass = e.getClass().getName();
 		String exceptionReason = e.getMessage();
 
-		logger.error( source.getName() + ": "+ exceptionSource + " got " + exceptionClass + " by " + exceptionReason + ".\n", e );
+		logger.error( "{0}: {1} got {2} by {3}.\n".formatted( e.getStackTrace()[ 0 ].getClass().getPackage(),
+		                                                      exceptionSource,
+		                                                      exceptionClass,
+		                                                      exceptionReason ), e );
 	}
 }
