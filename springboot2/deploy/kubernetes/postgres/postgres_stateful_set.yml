@@ -1,25 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: lab
+  labels:
+    app: postgres-deployment
+spec:
+  selector:
+    app: postgres-deployment
+  type: NodePort
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres_pod
+  name: postgres-deployment
   namespace: lab
 spec:
-  serviceName: postgres_service
-  replicas: 3
+  serviceName: postgres-service
+  replicas: 1
   selector:
     matchLabels:
-      app: postgres_pod
+      app: postgres-deployment
   template:
     metadata:
       labels:
-        app: postgres_pod
+        app: postgres-deployment
     spec:
       restartPolicy: Always
       containers:
         - name: postgres
           image: postgres
           ports:
-            - containerPort: 5432
+          - name: http
+            containerPort: 80
+            protocol: TCP
           env:
           - name: POSTGRES_HOST
             valueFrom:
@@ -31,7 +50,7 @@ spec:
               configMapKeyRef:
                 name: config
                 key: POSTGRES_DB
-          - name: POSTGRES_USERNAME
+          - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
                 name: secret
@@ -41,10 +60,40 @@ spec:
               secretKeyRef:
                 name: secret
                 key: POSTGRES_PASSWORD
-          volumeMounts:
-            - mountPath: /var/lib/postgres/data
-              name: db-data
+#          volumeMounts:
+#            - mountPath: /var/lib/postgres/data
+#              name: db-data
       volumes:
         - name: db-data
           persistentVolumeClaim:
             claimName: db-persistent-volume-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-persistent-volume-claim
+  namespace: lab
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-persistent-volume
+  namespace: lab
+  labels:
+    type: local
+    app: postgres
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "D:/lab/lab repo/data"
