@@ -48,7 +48,7 @@ public class AuthFilter implements Filter
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		httpResponse.setStatus( HttpServletResponse.SC_FORBIDDEN );
 		httpResponse.getWriter().write( "Access Denied" );
-		loggerService.accessDeny( httpRequest );
+		loggerService.accessDeny( this.getClass().getPackage(), httpRequest );
 		return;
 	}
 }
