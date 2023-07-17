@@ -2,7 +2,6 @@ package com.lab.sso.service;
 
 import com.lab.base.dmo.User;
 import com.lab.base.dto.sso.request.LoginDTO;
-import com.lab.base.dto.sso.request.LogoutDTO;
 import com.lab.base.dto.sso.request.RegisterDTO;
 import com.lab.sso.repository.criteria.UserCriteriaRepository;
 import com.lab.sso.repository.jpql.UserRepository;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @Transactional( propagation = Propagation.REQUIRES_NEW )
@@ -40,7 +38,6 @@ public class AuthService
 
 	public Boolean isMailExist( String email )
 	{
-		//		return Objects.nonNull( userRepository.findByEmail( email ).toFuture().get() );
 		return Objects.nonNull( userRepository.findByEmail( email ) );
 	}
 
@@ -63,7 +60,6 @@ public class AuthService
 	 */
 	public String login( LoginDTO loginDTO )
 	{
-		//		User user = userRepository.findByEmail( loginDTO.getEmail() ).toFuture().get();
 		User user = userRepository.findByEmail( loginDTO.getEmail() );
 		if( Objects.isNull( user ) )
 		{
@@ -83,7 +79,6 @@ public class AuthService
 	{
 		String token = authorization.substring( 7 );
 		Claims claims = jwtService.getClaims( token );
-		//		User user = userRepository.findByUuid( claims.get( "id", UUID.class ) ).toFuture().get();
 		User user = userRepository.findByUuid( UUID.fromString( claims.get( "id", String.class ) ) );
 
 		user.setToken( null );

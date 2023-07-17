@@ -34,14 +34,12 @@ public class JWTService
 				.setSubject( "user identity" )
 				.setIssuedAt( new Date( System.currentTimeMillis() ) )
 				.setExpiration( new Date( System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000 ) )
-				// weak key issue
 				.signWith( Keys.hmacShaKeyFor( secretKey.getBytes() ), SignatureAlgorithm.HS512 )
 				.compact();
 	}
 
 	public Boolean validateToken( String token ) throws ExecutionException, InterruptedException
 	{
-//		return userRepository.existsByToken( token ).toFuture().get() && !isTokenExpired( token );
 		return userRepository.existsByToken( token ) && !isTokenExpired( token );
 	}
 
