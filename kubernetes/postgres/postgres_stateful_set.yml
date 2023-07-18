@@ -12,7 +12,8 @@ spec:
   ports:
     - name: postgres
       protocol: TCP
-      port: 5432
+      port: 31522
+      nodePort: 31522
       targetPort: 5432
 ---
 apiVersion: apps/v1
@@ -61,12 +62,12 @@ spec:
                 name: secret
                 key: POSTGRES_PASSWORD
 #          volumeMounts:
-#            - mountPath: /var/lib/postgres/data
+#            - mountPath: /var/lib/postgresql/data
 #              name: db-data
       volumes:
         - name: db-data
-          persistentVolumeClaim:
-            claimName: db-persistent-volume-claim
+#          persistentVolumeClaim:
+#            claimName: db-persistent-volume-claim
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
