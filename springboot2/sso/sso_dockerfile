@@ -1,9 +1,6 @@
-# command:
-#   docker build -t mysso:0.0.1 -f .\sso_dockerfile .
+# 1. docker build -t mysso:0.0.1 -f .\sso_dockerfile .
+# 2. "eval $(minikube docker-env)" for unix-like, "minikube docker-env | Invoke-Expression"  for powershell
 FROM openjdk:17-jdk
-#RUN addgroup --system spring && adduser --system spring -ingroup spring
-#USER spring:spring
-#ARG JAR_FILE=target/*.jar
 WORKDIR /sso
 ENV SPRING_PROFILES_ACTIVE=k8s
 COPY ./target/sso-0.0.1-SNAPSHOT.jar app.jar

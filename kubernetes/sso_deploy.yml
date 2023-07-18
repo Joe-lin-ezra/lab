@@ -21,37 +21,30 @@ spec:
   selector:
     matchLabels:
       app: sso-deployment
+  replicas: 1
   template:
-    replica: 1
-
     metadata:
       labels:
-        app: sso_deployment
-    
+        app: sso-deployment
     spec:
       containers:
       - name: sso
-        image: 
-        
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        
+        image: mysso:0.0.1
+        imagePullPolicy: Never
+#        resources:
+#          limits:
+#            memory: "128Mi"
+#            cpu: "500m"
         ports:
         - containerPort: 8080
-        
         env:
         # postgres env
         - name: POSTGRES_HOST
-          valueFrom:
-            secretKeyRef:
-              name: secret
-              key: POSTGRES_HOST
+          value: postgres-service
         - name: POSTGRES_DB
           valueFrom:
-            secretKeyRef:
-              name: secret
+            configMapKeyRef:
+              name: config
               key: POSTGRES_DB
         - name: POSTGRES_USERNAME
           valueFrom:
@@ -64,7 +57,7 @@ spec:
               name: secret
               key: POSTGRES_PASSWORD
         # spring boot env
-        - name: SPRING_BOOT_PORT
+        - name: SERVER_PORT
           value: "8080"
         - name: JWT_SECRET
           valueFrom:
