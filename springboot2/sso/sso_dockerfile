@@ -1,7 +1,11 @@
-# 1. docker build -t mysso:0.0.1 -f .\sso_dockerfile .
-# 2. "eval $(minikube docker-env)" for unix-like, "minikube docker-env | Invoke-Expression"  for powershell
+# 1. build image `docker build -t 127.0.0.1:5000/lab/mysso:0.0.1 -f .\sso_dockerfile .`
+# 2. push to registry `docker push 127.0.0.1:5000/lab/mysso:0.0.1`
+# (deprecated)
+# 2. put the images in docker desktop to minikube
+#   2.1 `eval $(minikube docker-env)` for unix-like
+#   2.3 `minikube docker-env | Invoke-Expression`  for powershell
+# 3. (optional) using `minikube image load mysso:0.0.1` to refresh the image in minikube
 FROM openjdk:17-jdk
 WORKDIR /sso
-ENV SPRING_PROFILES_ACTIVE=k8s
-COPY ./target/sso-0.0.1-SNAPSHOT.jar app.jar
+COPY ./target/sso-0.0.1-SNAPSHOT.jar ./app.jar
 ENTRYPOINT ["java","-jar","/sso/app.jar"]
