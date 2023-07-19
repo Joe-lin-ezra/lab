@@ -1,0 +1,1 @@
+docker run -d -p 5000:5000 --network minikube --restart always --name minikube-registry registry:2.8

@@ -1,0 +1,1 @@
+docker run -d -p 5001:8080 --network minikube --name minikube-registry-web --link registry -e REGISTRY_URL=http://192.168.49.3:5000/v2 hyper/docker-registry-web
