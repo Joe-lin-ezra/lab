@@ -145,7 +145,6 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>1.10.5</version>
         </dependency>
-
         <!--        <dependency>-->
 <!--            <groupId>org.powermock</groupId>-->
 <!--            <artifactId>powermock-api-mockito2</artifactId>-->
@@ -181,6 +180,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

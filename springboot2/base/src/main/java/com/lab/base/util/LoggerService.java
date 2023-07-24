@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 
 @Service
 public class LoggerService
@@ -13,13 +14,15 @@ public class LoggerService
 
 	public void accessDeny( Package source, HttpServletRequest request )
 	{
-		logger.info( "{0}: {1} is denied to access the resource in {2}.".formatted( source.getName(),
-		                                                                            request.getRemoteAddr(), request.getRequestURI() ) );
+		String pattern = "{0}: {1} is denied to access the resource in {2}.";
+		logger.info( MessageFormat.format( pattern, source.getName(),
+		                                   request.getRemoteAddr(), request.getRequestURI() ) );
 	}
 
 	public void recordingQueryTime( String methodName, long executionTime )
 	{
-		logger.info( "{0} took {1} milli-seconds.".formatted( methodName, executionTime ) );
+		String pattern = "{0} took {1} milli-seconds.";
+		logger.info( MessageFormat.format( pattern, methodName, executionTime ) );
 	}
 
 	public void exception( Exception e )
@@ -28,9 +31,10 @@ public class LoggerService
 		String exceptionClass = e.getClass().getName();
 		String exceptionReason = e.getMessage();
 
-		logger.error( "{0}: {1} got {2} by {3}.\n".formatted( e.getStackTrace()[ 0 ].getClass().getPackage(),
-		                                                      exceptionSource,
-		                                                      exceptionClass,
-		                                                      exceptionReason ), e );
+		String pattern = "{0}: {1} got {2} by {3}.\n";
+		logger.error( MessageFormat.format( pattern, e.getStackTrace()[ 0 ].getClass().getPackage(),
+		                                    exceptionSource,
+		                                    exceptionClass,
+		                                    exceptionReason ), e );
 	}
 }
