@@ -4,7 +4,7 @@
 # 2. put the images in docker desktop to minikube
 #   2.1 `eval $(minikube docker-env)` for unix-like
 #   2.3 `minikube docker-env | Invoke-Expression`  for powershell
-# 3. (optional) using `minikube image load mysso:0.0.1` to refresh the image in minikube
+# 3. (optional) using `minikube image load lab/mysso:0.0.1` to refresh the image in minikube
 FROM openjdk:17-jdk
 WORKDIR /sso
 COPY ./target/sso-0.0.1-SNAPSHOT.jar ./app.jar

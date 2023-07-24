@@ -21,9 +21,9 @@ import java.util.Set;
 public class AuthFilter implements Filter
 {
 
-	private static Set<String> permittedPaths = Set.of( "/sso" );
+	private final static Set<String> permittedPaths = Set.of( "/actuator", "/sso" );
 
-	private LoggerService loggerService;
+	private final LoggerService loggerService;
 
 	@Autowired
 	public AuthFilter( LoggerService loggerService )
@@ -49,6 +49,5 @@ public class AuthFilter implements Filter
 		httpResponse.setStatus( HttpServletResponse.SC_FORBIDDEN );
 		httpResponse.getWriter().write( "Access Denied" );
 		loggerService.accessDeny( this.getClass().getPackage(), httpRequest );
-		return;
 	}
 }

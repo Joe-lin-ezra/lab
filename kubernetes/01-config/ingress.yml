@@ -4,24 +4,25 @@ metadata:
   name: ingress
   namespace: lab
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
-  ingressClassName: proxy
+  ingressClassName: nginx
   rules:
+    - host: lab.com
     - http:
         paths:
-          - path: /postgres
+          - path: /postgres(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: postgres-service
                 port:
-                  number: 5432
-
-          - path: /pgadmin
+                  number: 31522
+          - path: /pgadmin(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: pgadmin-service
                 port:
-                  number: 80
+                  number: 30200

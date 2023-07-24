@@ -1,7 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin-service
+  namespace: lab
+  labels:
+    app: pgadmin
+spec:
+  selector:
+    app: pgadmin
+  type: NodePort
+  ports:
+    - port: 30200
+      nodePort: 30200
+      targetPort: 80
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pgadmin
+  namespace: lab
 spec:
   selector:
     matchLabels:
@@ -19,26 +36,9 @@ spec:
             - name: PGADMIN_DEFAULT_EMAIL
               value: "admin@admin.com"
             - name: PGADMIN_DEFAULT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: secret
-                  key: POSTGRES_PASSWORD
+              value: "admin"
             - name: PGADMIN_PORT
               value: "80"
           ports:
             - containerPort: 80
               name: pgadminport
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: pgadmin-service
-  labels:
-    app: pgadmin
-spec:
-  selector:
-    app: pgadmin
-  type: NodePort
-  ports:
-    - port: 30200
-      nodePort: 30200
