@@ -1,6 +1,5 @@
 # 1. build image `docker build -t 127.0.0.1:5000/lab/mysso:0.0.1 -f .\sso_dockerfile .`
-# 2. push to registry `docker push 127.0.0.1:5000/lab/mysso:0.0.1`
-# (deprecated)
+# 2. (deprecated) push to registry `docker push 127.0.0.1:5000/lab/mysso:0.0.1`
 # 2. put the images in docker desktop to minikube
 #   2.1 `eval $(minikube docker-env)` for unix-like
 #   2.3 `minikube docker-env | Invoke-Expression`  for powershell

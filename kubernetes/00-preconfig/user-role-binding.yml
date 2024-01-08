@@ -1,0 +1,24 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dev-role
+  namespace: lab
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "update", "list"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dev-devuser
+  namespace: lab
+subjects:
+- kind: User
+  # note that: all the name should not use dash
+  name: dev_user
+  apiGroup: "rbac.authorization.k8s.io"
+roleRef:
+  kind: Role
+  name: dev-role
+  apiGroup: "rbac.authorization.k8s.io"

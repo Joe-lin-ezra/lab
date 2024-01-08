@@ -7,7 +7,7 @@ metadata:
     app: postgres-deployment
 spec:
   selector:
-    app: postgres-deployment
+    app: postgres-statefulset
   type: NodePort
   ports:
     - protocol: TCP
@@ -18,33 +18,33 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres-deployment
+  name: postgres-statefulset
   namespace: lab
 spec:
   serviceName: postgres-service
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-deployment
+      app: postgres-statefulset
   template:
     metadata:
       labels:
-        app: postgres-deployment
+        app: postgres-statefulset
     spec:
       restartPolicy: Always
       containers:
-        - name: postgres
+        - name: postgres-statefulset
           image: postgres
           ports:
           - name: http
             containerPort: 5432
             protocol: TCP
           env:
-          - name: POSTGRES_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: config
-                key: POSTGRES_HOST
+#          - name: POSTGRES_HOST
+#            valueFrom:
+#              configMapKeyRef:
+#                name: config
+#                key: POSTGRES_HOST
           - name: POSTGRES_DB
             valueFrom:
               configMapKeyRef:

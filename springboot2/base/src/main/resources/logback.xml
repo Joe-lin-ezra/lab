@@ -65,11 +65,17 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
+    
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>toutou.com:4560</destination>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
 
     <root level="DEBUG">
         <!-- 把 appender 加上去 -->
         <appender-ref ref="console" />
         <appender-ref ref="error" />
         <appender-ref ref="info" />
+        <appender-ref ref="logstash" />
     </root>
 </configuration>

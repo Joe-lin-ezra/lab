@@ -1,5 +1,7 @@
 package com.lab.sso.config;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,4 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 		return new BCryptPasswordEncoder();
 	}
 
+	@PostConstruct
+	public void initJvmExporter() {
+	    io.prometheus.client.hotspot.DefaultExports.initialize();
+	}
 }

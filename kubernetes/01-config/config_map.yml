@@ -4,5 +4,6 @@ metadata:
   name: config
   namespace: lab
 data:
+  POSTGRES_HOST: 0.0.0.0
   POSTGRES_URL: jdbc:postgresql://localhost:31522
   POSTGRES_DB: lab

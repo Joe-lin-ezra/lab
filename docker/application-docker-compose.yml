@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+    lab-mysso:
+        image: lab/mysso:0.0.1
+        container_name: mysso
+        ports:
+            - "8000:8000"
+        environment:
+            SERVER_PORT: 8000
+            SPRING_PROFILES_ACTIVE: k8s
+            POSTGRES_HOST: lab-postgres
+            POSTGRES_PORT: 5432
+            POSTGRES_DB: lab
+            POSTGRES_USERNAME: root
+            POSTGRES_PASSWORD: root
+            JWT_SECRET: nM74GYbZDts5nV/XwLUpUQWuHGg+vl+HWlwnKDXR2LwBDCM3SW7VxKzDqOxK1RcweRbCzKkbDfB8Ah8wzY2w2w==
+
+      
+    lab-postgres:
+        image: postgres:latest
+        container_name: lab-postgres
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: lab
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
