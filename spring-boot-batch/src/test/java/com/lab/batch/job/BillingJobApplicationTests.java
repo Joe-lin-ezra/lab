@@ -2,6 +2,7 @@ package com.lab.batch.job;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,30 +29,39 @@ class BillingJobApplicationTests {
 
 	@Autowired
 	private JobRepositoryTestUtils jobRepositoryTestUtils;
-	
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	@BeforeEach
 	public void setUp() {
 		this.jobRepositoryTestUtils.removeJobExecutions();
 		this.jobRepositoryTestUtils.removeJobExecutions();
-	    JdbcTestUtils.deleteFromTables(this.jdbcTemplate, "BILLING_DATA");
+		JdbcTestUtils.deleteFromTables(this.jdbcTemplate, "BILLING_DATA");
 	}
 
 	@Test
 	void testJobExecution() throws Exception {
 		// given
 		JobParameters jobParameters = new JobParametersBuilder()
-				.addString("input.file", "src/main/resources/data/billing-2023-01.csv")
-				.toJobParameters();
+		        .addString("input.file", "input/billing-2023-01.csv")
+		        .addString("output.file", "output/billing-report-2023-01.csv")
+		        .addJobParameter("data.year", 2023, Integer.class)
+		        .addJobParameter("data.month", 1, Integer.class)
+		        .toJobParameters();
 
 		// when
-		JobExecution jobExecution = this.jobLauncherTestUtils.launchJob(jobParameters);
+		JobExecution jobExecution = this.jobLauncherTestUtils
+				.launchJob(jobParameters);
 
 		// then
-		Assertions.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
-		Assertions.assertTrue(Files.exists(Paths.get("data", "billing-2023-01.csv")));
-	}
+		Assertions.assertEquals(ExitStatus.COMPLETED,
+				jobExecution.getExitStatus());
+		Assertions.assertTrue(
+				Files.exists(Paths.get("input", "billing-2023-01.csv")));
 
+		Path billingReport = Paths.get("output", "billing-report-2023-01.csv");
+		Assertions.assertTrue(Files.exists(billingReport));
+		Assertions.assertEquals(781, Files.lines(billingReport).count());
+	}
 }

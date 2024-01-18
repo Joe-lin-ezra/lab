@@ -1,4 +1,4 @@
-package com.lab.batch.pojo;
+package com.lab.batch.billing;
 
 public record BillingData(
 	int dataYear,
