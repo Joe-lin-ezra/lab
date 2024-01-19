@@ -67,7 +67,7 @@
     </appender>
     
     <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>toutou.com:4560</destination>
+        <destination>172.21.0.4:4560</destination>
         <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
