@@ -1,4 +1,4 @@
-package com.lab.batch.billing;
+package com.lab.batch.billing.config;
 
 import java.net.URL;
 
@@ -19,6 +19,7 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.support.JdbcTransactionManager;
+
+import com.lab.batch.billing.exception.PricingException;
+import com.lab.batch.billing.listener.BillingDataSkipListener;
+import com.lab.batch.billing.pojo.BillingData;
+import com.lab.batch.billing.pojo.ReportingData;
+import com.lab.batch.billing.service.BillingDataProcessor;
+import com.lab.batch.billing.service.FilePreparationTasklet;
 
 @Configuration
 public class BillingJobConfiguration {
@@ -49,11 +57,13 @@ public class BillingJobConfiguration {
 	public Step step2(JobRepository jobRepository,
 			JdbcTransactionManager transactionManager,
 			ItemReader<BillingData> billingDataFileReader,
-			ItemWriter<BillingData> billingDataTableWriter) {
+			ItemWriter<BillingData> billingDataTableWriter,
+			BillingDataSkipListener skipListener) {
 		return new StepBuilder("fileIngestion", jobRepository)
 				.<BillingData, BillingData>chunk(100, transactionManager)
 				.reader(billingDataFileReader).writer(billingDataTableWriter)
-				.build();
+				.faultTolerant().skip(FlatFileParseException.class)
+				.skipLimit(10).listener(skipListener).build();
 	}
 
 	@Bean
@@ -65,7 +75,11 @@ public class BillingJobConfiguration {
 		return new StepBuilder("reportGeneration", jobRepository)
 				.<BillingData, ReportingData>chunk(100, transactionManager)
 				.reader(billingDataTableReader).processor(billingDataProcessor)
-				.writer(billingDataFileWriter).build();
+				.writer(billingDataFileWriter)
+				.faultTolerant()
+				.retry(PricingException.class)
+				.retryLimit(100)
+				.build();
 	}
 
 	@Bean
@@ -119,5 +133,12 @@ public class BillingJobConfiguration {
 		String sql = "insert into billing_data values (:dataYear, :dataMonth, :accountId, :phoneNumber, :dataUsage, :callDuration, :smsCount)";
 		return new JdbcBatchItemWriterBuilder<BillingData>()
 				.dataSource(dataSource).sql(sql).beanMapped().build();
+	}
+
+	@Bean
+	@StepScope
+	public BillingDataSkipListener skipListener(
+			@Value("#{jobParameters['skip.file']}") String skippedFile) {
+		return new BillingDataSkipListener(skippedFile);
 	}
 }
