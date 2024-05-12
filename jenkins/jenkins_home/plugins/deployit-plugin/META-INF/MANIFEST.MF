@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Plugin-Dependencies: credentials:1.16.1,workflow-step-api:1.10
+Long-Name: XebiaLabs XL Deploy Plugin
+Plugin-Developers: XebiaLabs:XebiaLabsCI:xl-developers (at) xebialabs 
+ (dot) com
+Group-Id: com.xebialabs.deployit.ci
+Extension-Name: deployit-plugin
+Plugin-Version: 23.2.0
+Jenkins-Version: 1.642.3
+PluginFirstClassLoader: true
+Url: https://github.com/jenkinsci/xldeploy-plugin/blob/master/docs/REA
+ DME.md
+Short-Name: deployit-plugin
+

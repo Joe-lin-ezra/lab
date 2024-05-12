@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins
+    container_name: jenkins
+    ports:
+      - 8080:8080  # Map container port 8080 to host port 8080
+      - 50000:50000  # Optional: Map container port 50000 (Jenkins slave communication) to host port 50000
+    volumes:
+      - ./jenkins_home:/var/jenkins_home  # Persistent storage for Jenkins data
+    # environment:
+    #   - TZ=YOUR_TIMEZONE  # Set your timezone (e.g. America/Los_Angeles)
+    #   - JAVA_OPTS=-Duser.timezone=YOUR_TIMEZONE
+    restart: unless-stopped
+    working_dir: /var/jenkins_home  # Set working directory for Jenkins
+    command: >  # Multi-line command using heredoc syntax
+      bash -c 
+        "jenkins-plugin-cli --plugin-file ./plugins.txt --plugins delivery-pipeline-plugin deployit-plugin &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins email-ext &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins emailext-template &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins mailer &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins ant &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins gradle &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins junit &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins workflow-aggregator &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins github-branch-source &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins pipeline-github-lib &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins pipeline-stage-view &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins git &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins github &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins workflow-job &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins branch-api &&
+        jenkins-plugin-cli --plugin-file ./plugins.txt --plugins workflow-multibranch &&
+        java -jar /usr/share/jenkins/jenkins.war"
+      
+
+# volumes:
+#   jenkins_data: {}  # Empty volume to persist Jenkins data
